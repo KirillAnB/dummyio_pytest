@@ -16,3 +16,4 @@ def test_get_user_by_id(create_delete_dummy_user):
     result = requests.get(url=base_url + f"user/{user_id}", headers=dummyapi_headers)
     print(result.text)
 
+

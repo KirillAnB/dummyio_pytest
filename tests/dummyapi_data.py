@@ -11,3 +11,4 @@ dummy_user_data = {
     "lastName":'Ivanov',
     "email":"ivan1@testmail.org"
 }
+
