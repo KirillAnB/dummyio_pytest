@@ -13,3 +13,4 @@ def create_delete_dummy_user():
     print(delete_user_result.status_code)
     print(delete_user_result.text)
 
+
