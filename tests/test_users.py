@@ -14,7 +14,10 @@ def test_user_create(create_delete_dummy_user):
 def test_get_user_by_id(create_delete_dummy_user):
     user_id = create_delete_dummy_user.json().get("id")
     result = requests.get(url=base_url + f"user/{user_id}", headers=dummyapi_headers)
-    print(result.text)
+    result_json_data = result.json()
+    for key in create_delete_dummy_user.json():
+        print(f"Cheking {key}")
+        assert create_delete_dummy_user.json().get(key) == result.json().get(key)
 
 def test_user_in_users_list(create_delete_dummy_user):
     user_id = create_delete_dummy_user.json().get("id")
@@ -36,7 +39,17 @@ def test_user_in_users_list(create_delete_dummy_user):
                 print(f"User was found on page {i}")
     assert user_found == True
 
+@pytest.mark.parametrize('firstname, lastname, gender',[('Petr', 'Petrov', 'male'),('Julia',"Muragina", 'female')])
+def test_update_user(create_delete_dummy_user, firstname, lastname, gender):
+    payload = {
+        "firstName" : firstname,
+        "lastname" : lastname,
+        "gender" : gender
 
+    }
+    test_user_id = create_delete_dummy_user.json().get("id")
+    update_result = requests.put(url=base_url + f'user/{test_user_id}', data = payload, headers=dummyapi_headers)
+    print(update_result.text)
 
 
 
