@@ -1,14 +1,19 @@
 import pytest
 import requests
-from dummyapi_data import app_key, base_url, dummyapi_headers, dummy_user_data
+from dummyapi_data import  base_url, dummyapi_headers, dummy_user_data
+
+
+
+
 
 
 def test_user_create(create_delete_dummy_user):
-    print(create_delete_dummy_user.text)
-    assert create_delete_dummy_user.status_code == 200
-    assert create_delete_dummy_user.json().get("firstName") == dummy_user_data.get("firstName")
-    assert create_delete_dummy_user.json().get("lastName") == dummy_user_data.get("lastName")
-    assert create_delete_dummy_user.json().get("email") == dummy_user_data.get("email")
+    data_for_test = create_delete_dummy_user
+    print(data_for_test)
+    assert data_for_test[0].status_code == 200
+    assert data_for_test[0].json().get("firstName") == data_for_test[1].get("firstName")
+    assert data_for_test[0].json().get("lastName") == data_for_test[1].get("lastName")
+    assert data_for_test[0].json().get("email") == data_for_test[1].get("email")
 
 
 def test_get_user_by_id(create_delete_dummy_user):
@@ -52,4 +57,9 @@ def test_update_user(create_delete_dummy_user, firstname, lastname, gender):
     print(update_result.text)
 
 
+def test_user_delete(create_user):
+    user_id = create_user
+    delete_result = requests.delete(url=base_url + f'user/{user_id}', headers=dummyapi_headers)
+    print(delete_result.status_code)
+    print(delete_result.text)
 
