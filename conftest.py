@@ -1,10 +1,11 @@
 import pytest
 import requests
+import allure
 from tests.dummyapi_data import base_url, dummyapi_headers, dummy_user_data, fake_data
 
+@allure.title("Creating test user with faker data and deleting it after test")
 @pytest.fixture(scope="module")
 def create_delete_dummy_user():
-    print("Creating new user for test...")
     body_for_test = dummy_user_data
     create_user_result = requests.post(url=base_url + "user/create", data=body_for_test, headers=dummyapi_headers)
     new_user_id = create_user_result.json().get("id")
@@ -16,8 +17,8 @@ def create_delete_dummy_user():
 
 
 @pytest.fixture(scope='function')
+@allure.title("Creating test user with no deleting it")
 def create_user():
-    print("Creating test user for deleteing test")
     payload = {
         'firstName': fake_data.name().split()[0],
         'lastName' : fake_data.name().split()[1],

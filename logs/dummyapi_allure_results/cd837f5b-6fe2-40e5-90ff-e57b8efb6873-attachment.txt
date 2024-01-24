@@ -1,0 +1,6 @@
+{"id":"65b09fadf3266837009765f3","firstName":"James","lastName":"Anderson","email":"williamsterry@example.net","registerDate":"2024-01-24T05:27:09.577Z","updatedDate":"2024-01-24T05:27:09.577Z"}
+200
+{"id":"65b09fadf3266837009765f3"}
+deleting tested user...
+200
+{"id":"65b09f69f32668da1a9765b9"}
