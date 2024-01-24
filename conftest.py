@@ -1,6 +1,6 @@
 import pytest
 import requests
-from tests.dummyapi_data import base_url, dummyapi_headers, dummy_user_data
+from tests.dummyapi_data import base_url, dummyapi_headers, dummy_user_data, fake_data
 
 @pytest.fixture(scope="module")
 def create_delete_dummy_user():
@@ -18,7 +18,12 @@ def create_delete_dummy_user():
 @pytest.fixture(scope='function')
 def create_user():
     print("Creating test user for deleteing test")
-    create_user_result = requests.post(url=base_url + "user/create", data=dummy_user_data, \
+    payload = {
+        'firstName': fake_data.name().split()[0],
+        'lastName' : fake_data.name().split()[1],
+        'email' : fake_data.email()
+    }
+    create_user_result = requests.post(url=base_url + "user/create", data=payload, \
                                        headers=dummyapi_headers)
     test_user_id = create_user_result.json().get('id')
     print(create_user_result.text)

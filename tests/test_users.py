@@ -1,8 +1,6 @@
 import pytest
 import requests
-from dummyapi_data import  base_url, dummyapi_headers, dummy_user_data
-
-
+from dummyapi_data import  base_url, dummyapi_headers, fake_data
 
 
 
@@ -17,16 +15,15 @@ def test_user_create(create_delete_dummy_user):
 
 
 def test_get_user_by_id(create_delete_dummy_user):
-    user_id = create_delete_dummy_user.json().get("id")
+    user_id = create_delete_dummy_user[0].json().get("id")
     result = requests.get(url=base_url + f"user/{user_id}", headers=dummyapi_headers)
-    result_json_data = result.json()
-    for key in create_delete_dummy_user.json():
+    for key in create_delete_dummy_user[0].json():
         print(f"Cheking {key}")
-        assert create_delete_dummy_user.json().get(key) == result.json().get(key)
+        assert create_delete_dummy_user[0].json().get(key) == result.json().get(key)
 
 def test_user_in_users_list(create_delete_dummy_user):
-    user_id = create_delete_dummy_user.json().get("id")
-    user_created = create_delete_dummy_user.json().get("registerDate")
+    user_id = create_delete_dummy_user[0].json().get("id")
+    user_created = create_delete_dummy_user[0].json().get("registerDate")
     user_list = []
     for i in range(1,3):
         payload = {
@@ -44,15 +41,14 @@ def test_user_in_users_list(create_delete_dummy_user):
                 print(f"User was found on page {i}")
     assert user_found == True
 
-@pytest.mark.parametrize('firstname, lastname, gender',[('Petr', 'Petrov', 'male'),('Julia',"Muragina", 'female')])
-def test_update_user(create_delete_dummy_user, firstname, lastname, gender):
+@pytest.mark.parametrize('firstname, lastname',[(fake_data.name().split()[0], fake_data.name().split()[1])  for i in range(10)])
+def test_update_user(create_delete_dummy_user, firstname, lastname):
+    user_for_test = create_delete_dummy_user[0]
     payload = {
         "firstName" : firstname,
         "lastname" : lastname,
-        "gender" : gender
-
     }
-    test_user_id = create_delete_dummy_user.json().get("id")
+    test_user_id = user_for_test.json().get("id")
     update_result = requests.put(url=base_url + f'user/{test_user_id}', data = payload, headers=dummyapi_headers)
     print(update_result.text)
 
