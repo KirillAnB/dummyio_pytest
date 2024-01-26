@@ -8,6 +8,7 @@ from dummyapi_data import  base_url, dummyapi_headers, fake_data
 @allure.epic("Testing dummyapi.io user CRUD feature")
 @allure.testcase("TMS-001")
 @allure.title("Cheking fields in response")
+@pytest.mark.smoke
 def test_user_create(create_delete_dummy_user):
     data_for_test = create_delete_dummy_user
     print(data_for_test)
