@@ -2,6 +2,8 @@ import pytest
 import requests
 import allure
 from dummyapi_data import  base_url, dummyapi_headers, fake_data
+from jsonschema import validate
+
 
 
 
@@ -70,3 +72,16 @@ def test_user_delete(create_user):
     print(delete_result.status_code)
     print(delete_result.text)
 
+def test_create_user_schema(create_delete_dummy_user):
+    result = create_delete_dummy_user[0].json()
+    vaild_schema = {
+        'type':'object',
+        'properties':{
+            'firstName':{'type':'string'},
+            'lastName':{'type':'string'},
+            'email':{'type':'string'},
+            'sex':{'type':'string'}
+        },
+        'required':['firstName', 'lastName', 'email']
+    }
+    validate(result, vaild_schema)
